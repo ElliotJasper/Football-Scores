@@ -1,0 +1,4 @@
+node_modules/
+react/lastmanstanding/node_modules
+.env
+removeTest.js
