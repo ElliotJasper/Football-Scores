@@ -9,6 +9,7 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const session = require("express-session");
 const app = express();
+const footballRoute = require("./routes/football.js");
 
 app.use(express.json());
 
@@ -18,11 +19,17 @@ const users = connect.db.collection("users");
 app.use(
   session({
     secret: "secret",
-    name: "session_id",
+    name: "session_info",
     saveUninitialized: false,
     resave: false,
   })
 );
+
+app.get("/", (req, res) => {
+  req.session.name = "elliot";
+  console.log(req.session.id);
+  res.send("hello");
+});
 
 // Allow users to register
 app.post("/api/v1/register", async (req, res) => {
@@ -85,36 +92,7 @@ app.post("/api/v1/login", async (req, res) => {
 });
 
 // Get everything from database
-app.get("/api/v1/info", sessionauth.authKey, async (req, res) => {
-  getData = await lastManCollection.find({}).toArray();
-
-  return res.json(getData).send();
-});
-
-// Get all games depending on home team
-app.get(
-  "/api/v1/info/homename/:homeName",
-  sessionauth.authKey,
-  async (req, res) => {
-    const homeName = req.params.homeName;
-    getData = await lastManCollection.find({ homeName: homeName }).toArray();
-    return res.json(getData).send();
-  }
-);
-
-// Get all games depending on away team
-app.get("/api/v1/info/awayname/:awayName", async (req, res) => {
-  const awayName = req.params.awayName;
-  getData = await lastManCollection.find({ awayName: awayName }).toArray();
-  return res.json(getData).send();
-});
-
-// Get all games on a particular date
-app.get("/api/v1/info/date/:date", async (req, res) => {
-  const date = req.params.date;
-  getData = await lastManCollection.find({ date: date }).toArray();
-  return res.json(getData).send();
-});
+app.use("/api/v1/football", footballRoute);
 
 app.listen(8000, () => {
   console.log("Server running on port 8000");

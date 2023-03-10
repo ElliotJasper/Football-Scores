@@ -1,6 +1,8 @@
 require("dotenv").config({
-  path: "C:/Users/ellio/OneDrive/Documents/Visual Studio/lastmanstanding/.env",
+  path: "../.env",
 });
+
+console.log(process.env.PASSWORD);
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const games = require("../request");
@@ -17,6 +19,7 @@ const client = new MongoClient(URI, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
+
 client.connect((err) => {
   if (err) throw err;
   let db = client.db("lastmanstanding-scores");

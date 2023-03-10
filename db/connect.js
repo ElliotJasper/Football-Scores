@@ -12,9 +12,6 @@ const client = new MongoClient(URI, {
   useUnifiedTopology: true,
   serverApi: ServerApiVersion.v1,
 });
-client.connect((err) => {
-  if (err) throw err;
-});
 
 module.exports.db = client.db();
 //const lastManCollection = db.collection("last-man-standing");

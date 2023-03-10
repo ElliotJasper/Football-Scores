@@ -1,5 +1,5 @@
 require("dotenv").config({
-  path: "C:/Users/ellio/OneDrive/Documents/Visual Studio/lastmanstanding/.env",
+  path: "../.env",
 });
 console.log(process.env.PASSWORD);
 

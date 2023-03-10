@@ -7,7 +7,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      let data = await fetch("/api/v1/info/date/2023-03-05");
+      let data = await fetch("/api/v1/football/all");
       let body = await data.json();
       setData(body);
     };
