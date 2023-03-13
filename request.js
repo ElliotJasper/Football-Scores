@@ -18,7 +18,7 @@ fetch(requestURL)
 
     // Loop through object to find (a specific league) games only
     for (i = 0; i < leagueRoute.length; i++) {
-      if (leagueRoute[i].tournamentMeta.tournamentSlug == "championship") {
+      if (leagueRoute[i].tournamentMeta.tournamentSlug == "premier-league") {
         let leagueRouteLocal = leagueRoute[i];
         let scorePath =
           leagueRouteLocal.tournamentDatesWithEvents[formatDatePath];

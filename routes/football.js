@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const connect = require("../db/connect");
+const sessionauth = require("../utilities/sessionauth");
 
 const lastManCollection = connect.db.collection("last-man-standing");
 
@@ -8,7 +9,7 @@ const lastManCollection = connect.db.collection("last-man-standing");
 
 router.get("/all", async (req, res) => {
   getData = await lastManCollection.find({}).toArray();
-  return res.json(getData).send();
+  return res.json(getData);
 });
 
 router.get("/", async (req, res) => {
@@ -22,7 +23,7 @@ router.get("/", async (req, res) => {
   if (req.query) {
     getData = await lastManCollection.find(options).toArray();
     if (getData.length > 0) {
-      return res.json(getData).send();
+      return res.json(getData);
     } else {
       return res.json("No data or invalid queries").send();
     }
