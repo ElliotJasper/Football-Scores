@@ -21,6 +21,10 @@ const client = new MongoClient(URI, {
 });
 
 client.connect((err) => {
+  if (!games.allScores) {
+    client.close();
+    return;
+  }
   if (err) throw err;
   let db = client.db("lastmanstanding-scores");
   let query = { date: date.formatDateAPI };
