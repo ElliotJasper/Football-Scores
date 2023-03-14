@@ -1,5 +1,4 @@
 const date = require("./getdate");
-const fetch = require("node-fetch");
 
 let formatDateAPI = date.formatDateAPI;
 let formatDatePath = date.formatDatePath;
@@ -18,7 +17,7 @@ fetch(requestURL)
 
     // Loop through object to find (a specific league) games only
     for (i = 0; i < leagueRoute.length; i++) {
-      if (leagueRoute[i].tournamentMeta.tournamentSlug == "premier-league") {
+      if (leagueRoute[i].tournamentMeta.tournamentSlug == "champions-league") {
         let leagueRouteLocal = leagueRoute[i];
         let scorePath =
           leagueRouteLocal.tournamentDatesWithEvents[formatDatePath];

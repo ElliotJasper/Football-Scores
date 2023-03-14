@@ -1,5 +1,5 @@
 require("dotenv").config({
-  path: "../.env",
+  path: "C:/Users/ellio/Documents/lastmanstanding/.env",
 });
 
 console.log(process.env.PASSWORD);
