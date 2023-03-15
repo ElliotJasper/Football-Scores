@@ -1,5 +1,5 @@
 require("dotenv").config({
-  path: "C:/Users/ellio/Documents/lastmanstanding/.env",
+  path: __dirname + "/../.env",
 });
 
 console.log(process.env.PASSWORD);
@@ -21,7 +21,7 @@ const client = new MongoClient(URI, {
 });
 
 client.connect((err) => {
-  if (!games.allScores) {
+  if (!games.allGames) {
     client.close();
     return;
   }
@@ -40,7 +40,7 @@ client.connect((err) => {
           console.log("Document Deleted");
         });
         db.collection("last-man-standing").insertMany(
-          games.allScores,
+          games.allGames,
           (err, result) => {
             if (err) throw err;
             console.log("Document Updated");
@@ -49,7 +49,7 @@ client.connect((err) => {
         );
       } else {
         db.collection("last-man-standing").insertMany(
-          games.allScores,
+          games.allGames,
           (err, result) => {
             if (err) throw err;
             console.log("Document Inserted");

@@ -79,7 +79,6 @@ li {
 
 /* info component */
 .info-container {
-  margin-top: 100px;
   margin-left: 200px;
   font-size: 50px;
   width: 50%;
@@ -129,7 +128,46 @@ li {
   background-color: #efefef;
   border-radius: 20px;
   margin-top: 5%;
+  margin-bottom: 5%;
   margin-right: 15%;
+  position: relative;
+}
+
+.league-container {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  left: 70px;
+  z-index: 1;
+  top: 40px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.score-container {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 20px;
+  background-color: #5b64ec;
+  right: 70px;
+  bottom: 70px;
+}
+
+.scores-window-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  font-weight: 700;
+  width: 100%;
+}
+
+.scores-window-list > li {
+  padding: 20px 0;
 }
 
 #img {
