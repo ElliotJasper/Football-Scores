@@ -2,7 +2,6 @@
 require("dotenv").config({
   path: __dirname + "/../.env",
 });
-console.log(process.env.PASSWORD);
 const { MongoClient, ServerApiVersion, Db } = require("mongodb");
 const URI =
   "mongodb+srv://elliotadmin:" +
