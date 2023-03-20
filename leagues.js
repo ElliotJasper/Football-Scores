@@ -26,6 +26,8 @@ let getLeague = async (id) => {
     const league = { leagueName: leagueName };
     const tableRoute = data.payload[0].body.sportTables.tables[0].rows;
 
+    const leagueArray = [];
+
     // Loop through all the teams in the league and append data to object
     for (let i = 0; i < tableRoute.length; i++) {
       const teamPath = tableRoute[i].cells;
@@ -41,6 +43,7 @@ let getLeague = async (id) => {
         teamName: teamName,
         position: teamPath[0].td.text,
         points: teamPath[10].td.text,
+        goalDifference: teamPath[9].td.text,
         gamesPlayed: teamPath[3].td.text,
         gamesWon: teamPath[4].td.text,
         gamesDrawn: teamPath[5].td.text,
@@ -48,11 +51,26 @@ let getLeague = async (id) => {
         teamMoved: teamPath[1].td.text,
       };
 
+      leagueArray.push(individualTeam);
+
       // Add the single team to an object containing all the teams
-      league[i + 1] = individualTeam;
     }
+
+    league.table = leagueArray;
     // Push the league to an array containing all the leagues
     allLeagues.push(league);
   }
+  console.log(allLeagues);
   module.exports.allLeagues = allLeagues;
 })();
+
+/*
+
+allLeagues = [
+  {leagueName: prem,
+  table: [
+
+  ]}
+]
+
+*/

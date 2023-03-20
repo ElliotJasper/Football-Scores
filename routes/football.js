@@ -4,7 +4,8 @@ const connect = require("../db/connect");
 const sessionauth = require("../utilities/sessionauth");
 
 const lastManCollection = connect.db.collection("last-man-standing");
-
+const leaguesCollection = connect.db.collection("leagues");
+console.log(leaguesCollection);
 // Routes for all scores in db
 
 router.get("/all", async (req, res) => {
@@ -35,6 +36,13 @@ router.get("/awayname/:awayName", async (req, res) => {
   const awayName = req.params.awayName;
   getData = await lastManCollection.find({ awayName: awayName }).toArray();
   return res.json(getData).send();
+});
+
+router.get("/leagues", async (req, res) => {
+  getData = await leaguesCollection
+    .find({ leagueName: "League One Table" })
+    .toArray();
+  return res.json(getData[0].table);
 });
 
 module.exports = router;

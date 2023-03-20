@@ -1,7 +1,8 @@
 // Connect to Database
 require("dotenv").config({
-  path: "C:/Users/ellio/OneDrive/Documents/Visual Studio/lastmanstanding/.env",
+  path: __dirname + "/../.env",
 });
+console.log(process.env.PASSWORD);
 const { MongoClient, ServerApiVersion, Db } = require("mongodb");
 const URI =
   "mongodb+srv://elliotadmin:" +

@@ -15,6 +15,7 @@ app.use(express.json());
 
 const lastManCollection = connect.db.collection("last-man-standing");
 const users = connect.db.collection("users");
+const leagues = connect.db.collection("leagues");
 
 app.use(
   session({

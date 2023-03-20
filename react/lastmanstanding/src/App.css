@@ -173,3 +173,55 @@ li {
 #img {
   background-size: contain;
 }
+
+.leagues-container {
+  margin-top: 100px;
+  margin-bottom: 50px;
+  margin-left: 300px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  height: auto;
+  width: 300px;
+  display: flex;
+  gap: 30px;
+  justify-content: baseline;
+  padding: 20px 0 0 20px;
+  font-weight: 400;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.played-each,
+.team-each,
+.gd-each,
+.points-each {
+  margin: 20px 0;
+}
+
+.gd-each,
+.played-each {
+  font-weight: 700;
+}
+
+.points-each {
+  color: #5b64ec;
+  font-weight: 700;
+}
+
+#team-title,
+#gd-title,
+#played-title {
+  color: #919dab;
+  font-weight: 700;
+}
+
+#points-title {
+  color: #5b64ec;
+  font-weight: 700;
+}
+
+.inline-name {
+  padding-left: 10px;
+}
+.inline-pos {
+  font-weight: 700;
+}

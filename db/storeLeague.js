@@ -28,6 +28,7 @@ client.connect((err) => {
     if (err) throw err;
     db.collection("leagues").insertMany(league.allLeagues, (err, result) => {
       if (err) throw err;
+      console.log("Document Updated");
       client.close();
     });
   });

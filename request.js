@@ -9,6 +9,7 @@ const leaguesToUse = [
   "spanish-la-liga",
   "german-bundesliga",
   "french-ligue-one",
+  "europa-league",
 ];
 
 // Import date formats for API and pathing of API
@@ -36,10 +37,13 @@ const getGames = async (name) => {
 // Loops through leagues and gets data, appends to array, then exports for DB
 (async () => {
   let allGames = [];
+
   for (let team of leaguesToUse) {
     let data = await getGames(team);
+
     for (let league of data) {
       if (league == 0) continue;
+
       let game = {
         date: formatDateAPI,
         league: league.tournamentName.full,
