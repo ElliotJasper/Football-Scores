@@ -63,14 +63,3 @@ let getLeague = async (id) => {
   console.log(allLeagues);
   module.exports.allLeagues = allLeagues;
 })();
-
-/*
-
-allLeagues = [
-  {leagueName: prem,
-  table: [
-
-  ]}
-]
-
-*/

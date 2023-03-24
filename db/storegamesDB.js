@@ -4,7 +4,7 @@ require("dotenv").config({
 
 console.log(process.env.PASSWORD);
 
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient } = require("mongodb");
 const games = require("../request");
 const date = require("../getdate");
 
@@ -13,49 +13,36 @@ const URI =
   process.env.PASSWORD +
   "@lastmanstanding.oqj3y.mongodb.net/?retryWrites=true&w=majority";
 
-// Connect to MonogDB
-const client = new MongoClient(URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  serverApi: ServerApiVersion.v1,
-});
+async function run() {
+  const client = await MongoClient.connect(URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 
-client.connect((err) => {
-  if (!games.allGames) {
+  try {
+    if (!games.allGames || games.allGames.length === 0) {
+      return;
+    }
+
+    const db = client.db("lastmanstanding-scores");
+    const query = { date: date.formatDateAPI };
+
+    const result = await db
+      .collection("last-man-standing")
+      .find(query)
+      .toArray();
+
+    if (result.length > 0) {
+      await db.collection("last-man-standing").deleteMany(query);
+      await db.collection("last-man-standing").insertMany(games.allGames);
+      console.log("Document Updated");
+    } else {
+      await db.collection("last-man-standing").insertMany(games.allGames);
+      console.log("Document Inserted");
+    }
+  } finally {
     client.close();
-    return;
   }
-  if (err) throw err;
-  let db = client.db("lastmanstanding-scores");
-  let query = { date: date.formatDateAPI };
+}
 
-  // Insert or update documents depending if already exist
-  db.collection("last-man-standing")
-    .find(query)
-    .toArray((err, result) => {
-      if (err) throw err;
-      if (result.length > 0) {
-        db.collection("last-man-standing").deleteMany(query, (err, result) => {
-          if (err) throw err;
-          console.log("Document Deleted");
-        });
-        db.collection("last-man-standing").insertMany(
-          games.allGames,
-          (err, result) => {
-            if (err) throw err;
-            console.log("Document Updated");
-            client.close();
-          }
-        );
-      } else {
-        db.collection("last-man-standing").insertMany(
-          games.allGames,
-          (err, result) => {
-            if (err) throw err;
-            console.log("Document Inserted");
-            client.close();
-          }
-        );
-      }
-    });
-});
+run().catch((err) => console.error(err));

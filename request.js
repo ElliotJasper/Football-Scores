@@ -1,6 +1,6 @@
 const date = require("./getdate");
 
-// Leagues to get dat from
+// Leagues to get data from
 const leaguesToUse = [
   "premier-league",
   "championship",
@@ -20,18 +20,25 @@ let requestURL = `https://push.api.bbci.co.uk/batch?t=%2Fdata%2Fbbc-morph-footba
 
 // Function to get data for different leagues and return relevant parts
 const getGames = async (name) => {
-  const data = await fetch(requestURL);
-  const json = await data.json();
+  try {
+    const data = await fetch(requestURL);
+    const json = await data.json();
 
-  let leagueRoute = json.payload[0].body.matchData;
+    let leagueRoute = json.payload[0].body.matchData;
 
-  for (let league of leagueRoute) {
-    if (league.tournamentMeta.tournamentSlug == name) {
-      league = league.tournamentDatesWithEvents[formatDatePath][0].events;
-      return league;
+    for (let league of leagueRoute) {
+      if (league.tournamentMeta.tournamentSlug == name) {
+        league = league.tournamentDatesWithEvents[formatDatePath][0].events;
+        return league;
+      }
     }
+
+    // If league not found, throw custom error
+    throw new Error(`League '${name}' not found`);
+  } catch (error) {
+    console.error(`Error getting data for ${name}: ${error.message}`);
+    return [];
   }
-  return [];
 };
 
 // Loops through leagues and gets data, appends to array, then exports for DB

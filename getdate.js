@@ -28,5 +28,9 @@ if (month.length == 1) {
 let x = (module.exports.formatDatePath =
   weekday + "-" + date + nth(date) + "-" + monthName);
 let y = (module.exports.formatDateAPI = date_ob.toISOString().split("T")[0]);
+
+//let x = (module.exports.formatDatePath = "Sunday-19th-March");
+//let y = (module.exports.formatDateAPI = "2023-03-19");
+
 console.log(y);
 console.log(x);

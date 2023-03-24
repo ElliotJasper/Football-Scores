@@ -21,15 +21,18 @@ const client = new MongoClient(URI, {
   serverApi: ServerApiVersion.v1,
 });
 
-client.connect((err) => {
-  if (err) throw err;
-  let db = client.db("lastmanstanding-scores");
-  db.collection("leagues").deleteMany({}, (err, result) => {
-    if (err) throw err;
-    db.collection("leagues").insertMany(league.allLeagues, (err, result) => {
-      if (err) throw err;
-      console.log("Document Updated");
-      client.close();
-    });
-  });
-});
+async function updateLeagues() {
+  try {
+    await client.connect();
+    const db = client.db("lastmanstanding-scores");
+    await db.collection("leagues").deleteMany({});
+    const result = await db.collection("leagues").insertMany(league.allLeagues);
+    console.log("Document Updated");
+  } catch (err) {
+    console.error(err);
+  } finally {
+    client.close();
+  }
+}
+
+updateLeagues();
