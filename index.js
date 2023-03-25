@@ -16,6 +16,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    name: "session_id",
   })
 );
 
@@ -59,7 +60,7 @@ app.post("/api/v1/login", async (req, res, next) => {
       return res.status(401).send("Incorrect username or password");
     }
     req.session.email = req.body.email;
-    res.status(201).send("Logged in");
+    res.status(200).send("Logged in");
   } catch (err) {
     next(err);
   }
