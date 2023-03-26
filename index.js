@@ -44,6 +44,14 @@ app.post("/api/v1/register", async (req, res, next) => {
   }
 });
 
+app.get("/api/v1/checkauth", async (req, res, next) => {
+  if (req.session.email) {
+    res.status(200).send();
+  } else {
+    res.status(401).send();
+  }
+});
+
 app.post("/api/v1/login", async (req, res, next) => {
   try {
     const result = await connect.db

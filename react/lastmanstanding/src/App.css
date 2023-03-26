@@ -147,6 +147,11 @@ li {
   background-position: center;
   background-repeat: no-repeat;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
 }
 
 .score-container {
@@ -215,11 +220,13 @@ li {
 #played-title {
   color: #919dab;
   font-weight: 700;
+  margin-top: 15px;
 }
 
 #points-title {
   color: #5b64ec;
   font-weight: 700;
+  margin-top: 15px;
 }
 
 .inline-name {

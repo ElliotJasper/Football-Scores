@@ -8,8 +8,6 @@ import { useState, useEffect } from "react";
 import React from "react";
 
 function App() {
-  const [data, setData] = useState();
-
   return (
     <div>
       <Navbar />
@@ -19,7 +17,6 @@ function App() {
           <Window />
         </div>
       </div>
-      <League />
     </div>
   );
 }

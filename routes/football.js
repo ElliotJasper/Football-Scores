@@ -33,9 +33,23 @@ router.get("/", async (req, res) => {
 
 router.get("/leagues", async (req, res) => {
   getData = await leaguesCollection
-    .find({ leagueName: "League One Table" })
+    .find({ leagueName: "Premier League Table" })
     .toArray();
+  for (let i = 0; i < 6; i++) {
+    console.log(getData[0].table[i]);
+  }
   return res.json(getData[0].table);
+});
+
+router.get("/test", async (req, res) => {
+  getData = await leaguesCollection
+    .find({ leagueName: "Premier League Table" })
+    .toArray();
+  let gamesToSend = [];
+  for (let i = 0; i < 6; i++) {
+    gamesToSend.push(getData[0].table[i]);
+  }
+  return res.json(gamesToSend);
 });
 
 module.exports = router;
