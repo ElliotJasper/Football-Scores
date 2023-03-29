@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import liverpool from "../assets/liverpool.ico";
+import mancity from "../assets/mancity.png";
 
 const Window = () => {
   const [teamName, setTeamName] = useState([]);
