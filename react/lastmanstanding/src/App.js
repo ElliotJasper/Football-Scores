@@ -17,6 +17,7 @@ function App() {
           <Window />
         </div>
       </div>
+      <div className="blue">This is where other stuff goes</div>
     </div>
   );
 }

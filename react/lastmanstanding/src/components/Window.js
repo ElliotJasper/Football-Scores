@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import liverpool from "../assets/liverpool.ico";
-import mancity from "../assets/mancity.png";
+import mancity from "../assets/manchester-city.png";
+import chelsea from "../assets/chelsea.png";
+import west_ham from "../assets/west-ham.png";
 
 const Window = () => {
   const [teamName, setTeamName] = useState([]);
@@ -51,7 +53,34 @@ const Window = () => {
           ))}
         </div>
       </div>
-      <div className="score-container"></div>
+      <div className="score-container">
+        <div className="scores-display">
+          <div className="team-1-display">
+            <img className="team-image" src={liverpool} alt="liverpool" />
+            <h3 className="team-name-display">Liverpool</h3>
+          </div>
+          <div className="current-score-display">
+            <h2>2-0</h2>
+          </div>
+          <div className="team-2-display">
+            <img className="team-image" src={mancity} alt="man city" />
+            <h3 className="team-name-display">Man City</h3>
+          </div>
+        </div>
+        <div className="scores-display">
+          <div className="team-1-display">
+            <img className="team-image" src={chelsea} alt="chelsea" />
+            <h3 className="team-name-display">Chelsesa</h3>
+          </div>
+          <div className="current-score-display">
+            <h2>3-2</h2>
+          </div>
+          <div className="team-2-display">
+            <img className="team-image" src={west_ham} alt="west ham" />
+            <h3 className="team-name-display">West Ham</h3>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

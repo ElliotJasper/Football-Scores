@@ -30,6 +30,7 @@ li {
   justify-content: space-between;
   font-weight: 700;
   flex-wrap: wrap;
+  font-size: 1.15rem;
 }
 
 .nav-links {
@@ -114,6 +115,12 @@ li {
 .start {
   background-color: #5b64ec;
   color: #ffffff;
+  border: solid 1px #5b64ec;
+}
+.start:hover {
+  background-color: #ffffff;
+  color: #5b64ec;
+  border: solid 1px #000000;
 }
 
 .try {
@@ -121,6 +128,11 @@ li {
   border: solid 1px #000000;
   color: #000000;
   margin-left: 30px;
+}
+.try:hover {
+  background-color: #5b64ec;
+  color: #ffffff;
+  border: solid 1px #5b64ec;
 }
 
 .window-container {
@@ -156,6 +168,7 @@ li {
 
 .score-container {
   position: absolute;
+  color: #ffffff;
   width: 300px;
   height: 300px;
   border-radius: 20px;
@@ -164,9 +177,10 @@ li {
   bottom: 70px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: row;
+  gap: 20px;
 }
 
 .scores-window-list {
@@ -176,6 +190,10 @@ li {
   text-align: center;
   font-weight: 700;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .scores-window-list > li {
@@ -261,7 +279,51 @@ li {
   justify-content: center;
 }
 
-.time {
-  font-size: 10px;
-  letter-spacing: normal;
+.league-name-display {
+  font-size: 1.25rem;
+  align-self: baseline;
+  margin-left: 20px;
+}
+
+.scores-display {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  gap: 30px;
+}
+
+.team-1-display,
+.team-2-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-image {
+  width: 50px;
+  height: 50px;
+}
+
+.current-score-display > h2 {
+  letter-spacing: 2px;
+  color: #ffffff;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.team-name-display {
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.blue {
+  height: 1000px;
+  background-color: #5b64ec;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
 }
