@@ -2,23 +2,23 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Info from "./components/Info";
 import Window from "./components/Window";
-import League from "./components/League";
-
-import { useState, useEffect } from "react";
+import WithUse from "./components/WithUse";
 import React from "react";
 
 function App() {
   return (
-    <div>
-      <Navbar />
-      <div className="flex-components">
-        <Info />
-        <div className="window-container">
-          <Window />
+    <>
+      <div className="top-section">
+        <Navbar />
+        <div className="flex-components">
+          <Info />
+          <div className="window-container">
+            <Window />
+          </div>
         </div>
       </div>
-      <div className="blue">This is where other stuff goes</div>
-    </div>
+      <WithUse />
+    </>
   );
 }
 
