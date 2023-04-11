@@ -3,7 +3,7 @@ import Navbar from "./components/Navbar";
 import Info from "./components/Info";
 import Window from "./components/Window";
 import WithUse from "./components/WithUse";
-import React from "react";
+import Price from "./components/Price";
 
 function App() {
   return (
@@ -18,6 +18,9 @@ function App() {
         </div>
       </div>
       <WithUse />
+      <div className="pricing">
+        <Price />
+      </div>
     </>
   );
 }

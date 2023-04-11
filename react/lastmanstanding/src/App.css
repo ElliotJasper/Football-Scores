@@ -346,3 +346,78 @@ li {
   align-items: center;
   justify-content: center;
 }
+
+.pricing {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+}
+
+.prices-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.personal {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: baseline;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding: 30px;
+}
+
+.personal > h4 {
+  color: #5b64ec;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+.personal > .tag {
+  color: #919dab;
+  font-weight: 400;
+}
+.personal > h1 {
+  margin-top: 30px;
+  font-size: 4rem;
+}
+.time-frame {
+  color: #919dab;
+}
+.personal > button {
+  margin-top: 40px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 1.25rem;
+  background-color: #5b64ec;
+  border: none;
+  width: 100%;
+  align-self: center;
+  color: #ffffff;
+  font-weight: 700;
+}
+.personal > .included {
+  color: #363948;
+  font-weight: 400;
+  margin-top: 40px;
+  text-align: left;
+  font-size: 17px;
+}
+.personal > .features {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.features > p {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+}

@@ -7,5 +7,8 @@ cron.schedule("*/10 * * * * *", function () {
   nodeCmd.run("node storegamesdb", (err, data, stderr) => {
     console.log(data);
   });
+  nodeCmd.run("node storeLeague.js", (err, data, stderr) => {
+    console.log(data);
+  });
   console.log("ran");
 });
