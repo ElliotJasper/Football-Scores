@@ -140,7 +140,7 @@ li {
   height: 600px;
   background-color: #efefef;
   border-radius: 20px;
-  margin-top: 5%;
+  margin-top: 6%;
   margin-bottom: 5%;
   margin-right: 15%;
   position: relative;
@@ -355,12 +355,37 @@ li {
   text-align: center;
   height: 100vh;
 }
-
 .prices-container {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 100px;
+}
+
+.main-price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: baseline;
+  gap: 130px;
+  height: 100vh;
+}
+
+.price-title-container {
+  text-align: center;
+}
+
+.price-title-container > p {
+  color: #919dab;
+  font-size: 1.5rem;
+}
+
+.price-title {
+  color: #000000;
+  font-size: 5rem;
+  font-weight: 700;
+  margin-top: 100px;
 }
 
 .personal {
@@ -369,8 +394,9 @@ li {
   text-align: center;
   justify-content: baseline;
   border-radius: 20px;
-  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   padding: 30px;
+  width: 300px;
 }
 
 .personal > h4 {
@@ -389,6 +415,7 @@ li {
 .time-frame {
   color: #919dab;
 }
+.personal > form > button,
 .personal > button {
   margin-top: 40px;
   padding: 10px 20px;
@@ -420,4 +447,28 @@ li {
   flex-direction: row;
   align-items: center;
   justify-content: left;
+}
+
+.why-use {
+  height: 500px;
+  background-color: #5b64ec;
+  width: 100%;
+}
+
+.for-container {
+  height: 500px;
+  background-color: #5b64ec;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 2rem;
+  gap: 40px;
+}
+
+.for-container > p {
+  font-size: 1.68rem;
+  font-weight: 400;
 }

@@ -5,10 +5,14 @@ const bcrypt = require("bcrypt");
 const connect = require("./db/connect");
 const sessionauth = require("./utilities/sessionauth");
 const footballRoute = require("./routes/football");
+const body_parser = require("body-parser");
+
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+app.use(body_parser.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(
@@ -19,6 +23,30 @@ app.use(
     name: "session_id",
   })
 );
+
+const YOUR_DOMAIN = "http://localhost:3000";
+
+app.post("/create-checkout-session", async (req, res) => {
+  const prices = await stripe.prices.list({
+    lookup_keys: [req.body.lookup_key],
+    expand: ["data.product"],
+  });
+  const session = await stripe.checkout.sessions.create({
+    billing_address_collection: "auto",
+    line_items: [
+      {
+        price: prices.data[0].id,
+        // For metered billing, do not pass quantity
+        quantity: 1,
+      },
+    ],
+    mode: "subscription",
+    success_url: `${YOUR_DOMAIN}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+  });
+
+  res.redirect(303, session.url);
+});
 
 app.use("/api/v1/football", footballRoute);
 

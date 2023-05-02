@@ -4,6 +4,7 @@ import Info from "./components/Info";
 import Window from "./components/Window";
 import WithUse from "./components/WithUse";
 import Price from "./components/Price";
+import Use from "./components/Use";
 
 function App() {
   return (
@@ -18,8 +19,11 @@ function App() {
         </div>
       </div>
       <WithUse />
-      <div className="pricing">
-        <Price />
+
+      <Price />
+
+      <div className="why-use">
+        <Use />
       </div>
     </>
   );
