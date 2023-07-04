@@ -5,6 +5,19 @@ let date = date_ob.getDate(); // Day as an integer
 let month = date_ob.getMonth() + 1; // Month as integer
 let monthName = date_ob.toLocaleString("default", { month: "long" }); // Month as string
 
+const nth = function (d) {
+  if (d > 3 && d < 21) return "th";
+  switch (d % 10) {
+    case 1:
+      return "st";
+    case 2:
+      return "nd";
+    case 3:
+      return "rd";
+    default:
+      return "th";
+  }
+};
 // add ending to date: th, rd etc
 
 month = month.toString();

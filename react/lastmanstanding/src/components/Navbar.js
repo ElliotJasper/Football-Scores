@@ -7,10 +7,10 @@ const navbar = () => {
       <div className="nav-links">
         <div className="nav-logo">scoreit</div>
         <ul className="nav-list">
-          <li>Tables</li>
-          <li>Scores</li>
-          <li>Pricing</li>
-          <li>Docs</li>
+          <li className="hoverable">Tables</li>
+          <li className="hoverable">Scores</li>
+          <li className="hoverable">Pricing</li>
+          <li className="hoverable">Docs</li>
         </ul>
         <div className="nav-search-text">
           <div className="search-svg">
@@ -21,7 +21,7 @@ const navbar = () => {
       </div>
 
       <div className="nav-sign-in">
-        <div className="sign-in-text">Sign in</div>
+        <div className="sign-in-text hoverable">Sign in</div>
         <div className="svg-container">
           <Logo />
         </div>

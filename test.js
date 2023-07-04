@@ -1,51 +1,79 @@
+//16/17  17/18  18/19  19/20  20/21 21/22
+
+require("dotenv").config({
+  path: __dirname + "/.env",
+});
+console.log(__dirname);
+
+console.log(process.env.PASSWORD);
+
+const { MongoClient } = require("mongodb");
+const URI =
+  "mongodb+srv://elliotadmin:" +
+  process.env.PASSWORD +
+  "@lastmanstanding.oqj3y.mongodb.net/?retryWrites=true&w=majority";
+
 const fs = require("fs");
 // YYYY, MM, DD
-var from = new Date(2017, 7, 11);
-let test = new Date(2015, 5, 24);
-console.log(test);
-var to = new Date(2018, 4, 13);
+var from = new Date(2022, 7, 5);
+var to = new Date(2023, 4, 28);
+console.log(from.toLocaleString("default", { month: "long" }));
 let counter = 0;
 let every = [];
 
 // Function to get data for different leagues and return relevant parts
+// Function to get data for different leagues and return relevant parts
 const getGames = async (uri, x) => {
   try {
-    fetch(uri)
-      .then((response) => response.json())
-      .then((response) => {
-        let leagueRoute = response.payload[0].body.matchData;
-        for (let league of leagueRoute) {
-          if (league.tournamentMeta.tournamentSlug == "premier-league") {
-            if (league.tournamentDatesWithEvents[x] != undefined) {
-              league = league.tournamentDatesWithEvents[x][0].events;
-              console.log(league[0]);
-              counter += league.length;
-              console.log(counter);
+    const response = await fetch(uri);
+    const data = await response.json();
+    let leagueRoute = data.payload[0].body.matchData;
+    for (let league of leagueRoute) {
+      if (league.tournamentMeta.tournamentSlug == "premier-league") {
+        if (league.tournamentDatesWithEvents[x] != undefined) {
+          league = league.tournamentDatesWithEvents[x][0].events;
+          counter += league.length;
+          console.log(counter);
 
-              every.push(...league);
-              for (let teams of league) {
-                let info =
-                  teams.startTime +
-                  "  " +
-                  teams.homeTeam.name.full +
-                  "vs" +
-                  teams.awayTeam.name.full;
-                fs.appendFile(
-                  "text.txt",
-                  JSON.stringify(info) + "\n",
-                  function (err) {
-                    if (err) throw err;
-                    console.log("saved");
-                  }
-                );
+          every.push(...league);
+          for (let games of league) {
+            let game = {
+              date: games.startTime.slice(0, 10),
+              league: games.tournamentName.full,
+              startTime: games.startTimeInUKHHMM,
+              homeNameAbbrv: games.homeTeam.name.abbreviation,
+              homeNameFull: games.homeTeam.name.full,
+              homeScore: games.homeTeam.scores.score,
+              homeResult: games.homeTeam.eventOutcome,
+              awayNameAbbrv: games.awayTeam.name.abbreviation,
+              awayNameFull: games.awayTeam.name.full,
+              awayScore: games.awayTeam.scores.score,
+              awayResult: games.awayTeam.eventOutcome,
+            };
+
+            const client = await MongoClient.connect(URI, {
+              useNewUrlParser: true,
+              useUnifiedTopology: true,
+            });
+            const db = client.db("lastmanstanding-scores");
+
+            await db.collection("last-man-standing").insertOne(game);
+            client.close();
+
+            fs.appendFile(
+              "text.txt",
+              JSON.stringify(game) + "\n",
+              function (err) {
+                if (err) throw err;
+                console.log("saved");
               }
-            }
+            );
           }
         }
-      });
-
-    // If league not found, throw custom error
+      }
+    }
   } catch (error) {
+    console.log(error);
     console.error(`Error getting data`);
     return [];
   }
@@ -53,8 +81,8 @@ const getGames = async (uri, x) => {
 // loop for every day
 const loopAll = async () => {
   for (var day = from; day <= to; day.setDate(day.getDate() + 1)) {
-    // your day is here
     console.log(day);
+    // your day is here
     // sometimes date has leading 0, sometimes doesnt, check this.
 
     let date_ob = day;
@@ -128,10 +156,12 @@ const loopAll = async () => {
 
     getGames(requestURL, x);
   }
+  console.log("*******************");
+  console.log(every[0]);
   return every;
 };
 
 (async () => {
   await loopAll();
-  console.log(every[0]);
 })();
+console.log(from.toLocaleString("default", { month: "long" }));

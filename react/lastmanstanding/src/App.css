@@ -399,6 +399,11 @@ li {
   width: 300px;
 }
 
+.hoverable:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
 .personal > h4 {
   color: #5b64ec;
   font-weight: 700;
