@@ -2,7 +2,7 @@ import { ReactComponent as Tick } from "../assets/tick.svg";
 
 const Price = () => {
   return (
-    <div className="main-price-container">
+    <div id="main-price-container">
       <div className="price-title-container">
         <div className="price-title">Our Price Guarantee</div>
         <p>Choose a plan tailored to your needs</p>
@@ -18,7 +18,7 @@ const Price = () => {
           <div className="features">
             <p>
               <Tick />
-              1000 requests per day
+              500 requests per day
             </p>
             <p>
               <Tick />2 separate IPs
@@ -26,6 +26,8 @@ const Price = () => {
           </div>
           <form action="/create-checkout-session" method="POST">
             <input type="hidden" name="lookup_key" value="freelance" />
+            <input type="hidden" name="requests" value="500" />
+            <input type="hidden" name="ips" value="2" />
             <button type="submit">Choose plan</button>
           </form>
         </div>
@@ -38,7 +40,7 @@ const Price = () => {
           <div className="features">
             <p>
               <Tick />
-              5,000 requests per day
+              1000 requests per day
             </p>
             <p>
               <Tick />
@@ -47,6 +49,8 @@ const Price = () => {
           </div>
           <form action="/create-checkout-session" method="POST">
             <input type="hidden" name="lookup_key" value="professional" />
+            <input type="hidden" name="requests" value="1000" />
+            <input type="hidden" name="ips" value="10" />
             <button type="submit">Choose plan</button>
           </form>
         </div>
@@ -60,7 +64,7 @@ const Price = () => {
           <div className="features">
             <p>
               <Tick />
-              10,000 requests per day
+              2000 requests per day
             </p>
             <p>
               <Tick />
@@ -69,6 +73,8 @@ const Price = () => {
           </div>
           <form action="/create-checkout-session" method="POST">
             <input type="hidden" name="lookup_key" value="plus" />
+            <input type="hidden" name="requests" value="2000" />
+            <input type="hidden" name="ips" value="25" />
             <button type="submit">Choose plan</button>
           </form>
         </div>

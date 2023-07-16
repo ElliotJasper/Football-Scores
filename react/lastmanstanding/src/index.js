@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Info from "./components/Info";
 import LoginPage from "./components/Login";
-
 import App from "./App";
+import Success from "./components/Success";
+import Success2 from "./components/Success2";
+import Failure from "./components/Failure";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,14 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/confirm",
+    element: <Success2 />,
+  },
+  {
+    path: "/failure",
+    element: <Failure />,
   },
 ]);
 

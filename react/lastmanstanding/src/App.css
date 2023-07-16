@@ -5,6 +5,15 @@
   font-family: "Lato", sans-serif;
 }
 
+a {
+  color: #000000;
+  text-decoration: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 li {
   list-style-type: none;
 }
@@ -363,7 +372,7 @@ li {
   gap: 100px;
 }
 
-.main-price-container {
+#main-price-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -476,4 +485,234 @@ li {
 .for-container > p {
   font-size: 1.68rem;
   font-weight: 400;
+}
+
+.success-container,
+.failure-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #5b64ec;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.payment-success,
+.payment-fail {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.payment-info,
+.decline-info {
+  font-size: 20px;
+  line-height: 25px;
+}
+
+.back-home {
+  background-color: #ffffff;
+  color: #5b64ec;
+  padding: 10px 40px;
+  border-radius: 30px;
+  font-size: 1.25rem;
+}
+.back-home:hover {
+  cursor: pointer;
+  opacity: 0.85;
+}
+
+.success-two-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.success-two-main {
+  width: 60vw;
+  height: 80vh;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 10px;
+}
+
+.success-top-confirm {
+  height: 10%;
+  border-bottom: 4px #efefef solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.8rem;
+  color: #5b64ec;
+}
+.success-main {
+  height: 90%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  background-color: #efefef;
+}
+.success-main-left {
+  flex: 1;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+.success-main-right {
+  flex: 1;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.order-confirmed {
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.order-token-info {
+  color: #919dab;
+  font-size: 1.5rem;
+}
+
+.go-home {
+  width: 70%;
+  border-radius: 10px;
+  background-color: #5b64ec;
+  color: #ffffff;
+  text-align: center;
+  height: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 170px;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+}
+
+.go-home:hover {
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.view-invoice {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #5b64ec;
+}
+
+.success-top-right {
+  height: 50%;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 50px;
+  font-weight: 700;
+  gap: 20px;
+  font-size: 1.2rem;
+}
+
+.success-bottom-right {
+  width: 100%;
+  height: 50%;
+  border-top: #efefef 4px solid;
+  display: flex;
+  flex-direction: column;
+}
+
+.delivery-info {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-weight: 700;
+  color: #919dab;
+}
+
+.time-accessible {
+  padding-top: 2px;
+}
+
+.product-title {
+  padding-top: 20px;
+  color: #363948;
+}
+
+.product-info {
+  color: #919dab;
+}
+
+.includes-list {
+  color: #80889e;
+}
+
+.includes-one {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+
+.price-info-top {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 4px solid #efefef;
+}
+
+.flex-row {
+  flex: 1;
+}
+
+.bottom-right-row1,
+.bottom-right-row2 {
+  border-bottom: 4px solid #efefef;
+}
+
+.quantity,
+.price-per {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: #919dab;
+}
+
+.quantity {
+  border-right: 4px solid #efefef;
+}
+
+.bottom-right-row1,
+.bottom-right-row2,
+.bottom-right-row3 {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: #919dab;
+  padding: 0 100px;
+}
+
+.bottom-right-row3 {
+  color: #2e2e2e;
+  font-size: 1.6rem;
 }

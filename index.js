@@ -1,4 +1,5 @@
 require("dotenv").config();
+const cookieParser = require("cookie-parser");
 const express = require("express");
 const session = require("express-session");
 const bcrypt = require("bcrypt");
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 8000;
 
 app.use(body_parser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(
   session({
@@ -27,6 +29,8 @@ app.use(
 const YOUR_DOMAIN = "http://localhost:3000";
 
 app.post("/create-checkout-session", async (req, res) => {
+  res.cookie("num-req", req.body["requests"]);
+  res.cookie("num-ip", req.body["ips"]);
   const prices = await stripe.prices.list({
     lookup_keys: [req.body.lookup_key],
     expand: ["data.product"],
@@ -41,10 +45,11 @@ app.post("/create-checkout-session", async (req, res) => {
       },
     ],
     mode: "subscription",
-    success_url: `${YOUR_DOMAIN}/?success=true&session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    success_url: `${YOUR_DOMAIN}/confirm/?success=true&session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${YOUR_DOMAIN}/failure?canceled=true`,
   });
-
+  let itemPrice = prices.data[0].unit_amount / 100;
+  res.cookie("price", itemPrice);
   res.redirect(303, session.url);
 });
 
