@@ -5,6 +5,7 @@ import Window from "./components/Window";
 import WithUse from "./components/WithUse";
 import Price from "./components/Price";
 import Use from "./components/Use";
+import Tables from "./components/Tables";
 
 function App() {
   return (
@@ -19,12 +20,11 @@ function App() {
         </div>
       </div>
       <WithUse />
-
       <Price />
-
       <div className="why-use">
         <Use />
       </div>
+      <Tables />
     </>
   );
 }

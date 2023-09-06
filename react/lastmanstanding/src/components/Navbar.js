@@ -1,15 +1,24 @@
-import { redirect, Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { ReactComponent as Logo } from "../assets/arrow-right.svg";
 import { ReactComponent as Search } from "../assets/search.svg";
 
 const navbar = () => {
-  let navigate = useNavigate();
-  const toRedirect = () => {
-    navigate("/login");
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
   };
 
-  const pricingScroll = () => {};
+  const loggedInUser = getCookie("logged_in") || false;
+
+  let navigate = useNavigate();
+  const toLogin = () => {
+    navigate("/login");
+  };
+  const toRegister = () => {
+    navigate("/register");
+  };
 
   return (
     <div className="nav-container">
@@ -31,8 +40,14 @@ const navbar = () => {
         </div>
       </div>
 
-      <div className="nav-sign-in" onClick={toRedirect}>
-        <div className="sign-in-text hoverable">Sign in</div>
+      <div className="nav-sign-in">
+        {loggedInUser == false ? (
+          <div className="sign-in-text hoverable">
+            <Link to={"/login"}>Sign In</Link>
+          </div>
+        ) : (
+          <div className="sign-in-text hoverable">Sign Out</div>
+        )}
 
         <div className="svg-container">
           <Logo />

@@ -31,17 +31,67 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/leagues", async (req, res) => {
+router.get("/test", async (req, res) => {
   getData = await leaguesCollection
     .find({ leagueName: "Premier League Table" })
     .toArray();
+  let gamesToSend = [];
   for (let i = 0; i < 6; i++) {
-    console.log(getData[0].table[i]);
+    gamesToSend.push(getData[0].table[i]);
   }
-  return res.json(getData[0].table);
+  return res.json(gamesToSend);
 });
-
-router.get("/test", async (req, res) => {
+router.get("/eng", async (req, res) => {
+  getData = await leaguesCollection
+    .find({ leagueName: "Premier League Table" })
+    .toArray();
+  let gamesToSend = [];
+  for (let i = 0; i < 10; i++) {
+    gamesToSend.push(getData[0].table[i]);
+  }
+  return res.json(gamesToSend);
+});
+router.get("/ger", async (req, res) => {
+  getData = await leaguesCollection
+    .find({ leagueName: "German Bundesliga Table" })
+    .toArray();
+  let gamesToSend = [];
+  for (let i = 0; i < 10; i++) {
+    gamesToSend.push(getData[0].table[i]);
+  }
+  return res.json(gamesToSend);
+});
+router.get("/esp", async (req, res) => {
+  getData = await leaguesCollection
+    .find({ leagueName: "Spanish La Liga Table" })
+    .toArray();
+  let gamesToSend = [];
+  for (let i = 0; i < 10; i++) {
+    gamesToSend.push(getData[0].table[i]);
+  }
+  return res.json(gamesToSend);
+});
+router.get("/eng", async (req, res) => {
+  getData = await leaguesCollection
+    .find({ leagueName: "Premier League Table" })
+    .toArray();
+  let gamesToSend = [];
+  for (let i = 0; i < 6; i++) {
+    gamesToSend.push(getData[0].table[i]);
+  }
+  return res.json(gamesToSend);
+});
+router.get("/eng", async (req, res) => {
+  getData = await leaguesCollection
+    .find({ leagueName: "Premier League Table" })
+    .toArray();
+  let gamesToSend = [];
+  for (let i = 0; i < 6; i++) {
+    gamesToSend.push(getData[0].table[i]);
+  }
+  return res.json(gamesToSend);
+});
+router.get("/eng", async (req, res) => {
   getData = await leaguesCollection
     .find({ leagueName: "Premier League Table" })
     .toArray();

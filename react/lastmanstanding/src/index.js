@@ -3,9 +3,11 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginPage from "./components/Login";
 import App from "./App";
-import Success from "./components/Success";
 import Success2 from "./components/Success2";
 import Failure from "./components/Failure";
+import Register from "./components/Register";
+import Subscribe from "./components/Subscribe";
+import StripeWrapper from "./components/StripeWrapper";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
   {
     path: "/failure",
     element: <Failure />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    path: "/subscribe",
+    element: <StripeWrapper />,
   },
 ]);
 
