@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { sanitize } from "../utils/sanitize";
+import { useCookies } from "react-cookie";
 
 function Login() {
   const [email, setEmail] = useState("");

@@ -16,8 +16,14 @@ const Success2 = () => {
   };
 
   let price = getCookie("price");
-  let requests = getCookie("num-req");
-  let ips = getCookie("num-ip");
+  let requests = getCookie("requests");
+  let ips = getCookie("ips");
+
+  useEffect(() => {
+    console.log(getCookie("price"));
+  }, []);
+
+  console.log(price);
 
   return (
     <div className="success-two-container">

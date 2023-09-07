@@ -374,15 +374,6 @@ li {
   margin-bottom: 150px;
 }
 
-#main-price-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: baseline;
-  gap: 130px;
-  height: 100vh;
-}
-
 .price-title-container {
   text-align: center;
 }
@@ -528,7 +519,8 @@ li {
   opacity: 0.85;
 }
 
-.success-two-container {
+.success-two-container,
+.dashboard-main-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -536,11 +528,19 @@ li {
   height: 100vh;
 }
 
-.success-two-main {
+.success-two-main,
+.dashboard {
   width: 60vw;
   height: 80vh;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   border-radius: 10px;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: center;
 }
 
 .success-top-confirm {

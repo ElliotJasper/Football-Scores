@@ -6,8 +6,7 @@ import App from "./App";
 import Success2 from "./components/Success2";
 import Failure from "./components/Failure";
 import Register from "./components/Register";
-import Subscribe from "./components/Subscribe";
-import StripeWrapper from "./components/StripeWrapper";
+import Dashboard from "./components/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -30,10 +29,7 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register />,
   },
-  {
-    path: "/subscribe",
-    element: <StripeWrapper />,
-  },
+  { path: "/dashboard", element: <Dashboard /> },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

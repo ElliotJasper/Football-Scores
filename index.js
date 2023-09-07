@@ -12,7 +12,68 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 8000;
+const endpointSecret =
+  "whsec_1861d4669ed88cba5cceca606d411c2d775cce65c3875c101f3aa32487be42c7";
 
+app.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  async (req, res) => {
+    let event = req.body;
+    // Only verify the event if you have an endpoint secret defined.
+    // Otherwise use the basic event deserialized with JSON.parse
+    if (endpointSecret) {
+      // Get the signature sent by Stripe
+      const signature = req.headers["stripe-signature"];
+      try {
+        event = stripe.webhooks.constructEvent(
+          req.body,
+          signature,
+          endpointSecret
+        );
+      } catch (err) {
+        console.log(`⚠️  Webhook signature verification failed.`, err.message);
+        return res.sendStatus(400);
+      }
+    }
+
+    // If payment intent succeeded, create API key for user
+    switch (event.type) {
+      case "payment_intent.succeeded":
+        const paymentIntent = event.data.object;
+        console.log(
+          `PaymentIntent for ${paymentIntent.amount} was successful!`
+        );
+        // Then define and call a method to handle the successful payment intent.
+        const APIKey = sessionauth.createAPIKey();
+        const filter = { custID: paymentIntent.customer };
+        const updateDoc = {
+          $set: {
+            activeSubscription: true,
+            subscriptionLevel: paymentIntent.amount,
+            key: APIKey,
+          },
+        };
+        const result = await connect.db
+          .collection("users")
+          .updateOne(filter, updateDoc);
+        console.log(result);
+        // handlePaymentIntentSucceeded(paymentIntent);
+        break;
+      case "payment_method.attached":
+        const paymentMethod = event.data.object;
+        // Then define and call a method to handle the successful attachment of a PaymentMethod.
+        // handlePaymentMethodAttached(paymentMethod);
+        break;
+      default:
+        // Unexpected event type
+        console.log(`Unhandled event type ${event.type}.`);
+    }
+
+    // Return a 200 response to acknowledge receipt of the event
+    res.send();
+  }
+);
 app.use(body_parser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
@@ -40,73 +101,34 @@ app.get("/config", async (req, res) => {
   });
 });
 
-app.post("/create-subscription", async (req, res) => {
-  if (!req.cookies["logged_in"]) {
-    res.redirect("/login");
-  } else {
-    // Get customer ID from users email in cookies
-    const result = await connect.db
-      .collection("users")
-      .findOne({ email: req.cookies["email"] });
+app.post("/create-checkout-session", async (req, res) => {
+  //console.log(req.body.customerId);
+  const prices = await stripe.prices.list({
+    lookup_keys: [req.body.lookup_key],
+    expand: ["data.product"],
+  });
+  const requests = req.body.requests.split(" ")[0];
+  const ips = req.body.ips.split(" ")[0];
+  console.log(requests, ips);
+  res.cookie("price", prices.data[0].unit_amount / 100);
+  res.cookie("requests", requests);
+  res.cookie("ips", ips);
+  const session = await stripe.checkout.sessions.create({
+    billing_address_collection: "auto",
+    line_items: [
+      {
+        price: prices.data[0].id,
+        // For metered billing, do not pass quantity
+        quantity: 1,
+      },
+    ],
+    mode: "subscription",
+    success_url: `${YOUR_DOMAIN}/confirm`,
+    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    customer: req.body.customerId,
+  });
 
-    // Get customer ID
-    const customerId = result.custID;
-
-    const priceId = req.body.priceId;
-
-    // Create subscription
-    try {
-      const subscription = await stripe.subscriptions.create({
-        customer: customerId,
-        items: [
-          {
-            price: priceId,
-          },
-        ],
-        payment_behavior: "default_incomplete",
-        expand: ["latest_invoice.payment_intent"],
-      });
-      console.log(subscription.latest_invoice.payment_intent.client_secret);
-
-      res.send({
-        subscriptionId: subscription.id,
-        clientSecret: subscription.latest_invoice.payment_intent.client_secret,
-      });
-    } catch (error) {
-      console.log(error.message);
-      return res.status(400).send({ error: { message: error.message } });
-    }
-  }
-});
-
-app.post("/create-checkout", async (req, res) => {
-  if (!req.cookies["logged_in"]) {
-    res.redirect("/login");
-  } else {
-    res.cookie("num-req", req.body["requests"]);
-    res.cookie("num-ip", req.body["ips"]);
-    const prices = await stripe.prices.list({
-      lookup_keys: [req.body.lookup_key],
-      expand: ["data.product"],
-    });
-    const session = await stripe.checkout.sessions.create({
-      billing_address_collection: "auto",
-      line_items: [
-        {
-          price: prices.data[0].id,
-          // For metered billing, do not pass quantity
-          quantity: 1,
-        },
-      ],
-      mode: "subscription",
-      success_url: `${YOUR_DOMAIN}/confirm/?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${YOUR_DOMAIN}/failure?canceled=true`,
-    });
-    console.log(prices.data[0].id);
-    let itemPrice = prices.data[0].unit_amount / 100;
-    res.cookie("price", itemPrice);
-    res.redirect(303, session.url);
-  }
+  res.redirect(303, session.url);
 });
 
 app.use("/api/v1/football", footballRoute);
@@ -165,10 +187,19 @@ app.post("/api/v1/login", async (req, res, next) => {
     req.session.email = req.body.email;
     res.cookie("logged_in", true);
     res.cookie("email", req.body.email);
-    res.status(200).send("Logged in");
+    res.cookie("customerId", result.custID);
+    res.status(200).send({ customerId: result.custID });
   } catch (err) {
     next(err);
   }
+});
+
+app.post("/sub-info", async (req, res) => {
+  let val = decodeURIComponent(req.body.email);
+  const result = await connect.db.collection("users").findOne({ email: val });
+
+  console.log(result.key);
+  res.send(JSON.stringify(result.key));
 });
 
 app.use((err, req, res, next) => {

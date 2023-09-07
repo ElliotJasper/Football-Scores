@@ -4,13 +4,26 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Price = () => {
-  const [cookies, setCookie, removeCookie] = useCookies(["cliSecret", "subId"]);
+  const [customerId, setCustomerId] = useState(null);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "cliSecret",
+    "subId",
+    "price",
+  ]);
   const [prices, setPrices] = useState([]);
   const [subscriptionData, setSubscriptionData] = useState(null);
 
   const navigate = useNavigate();
 
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+
   useEffect(() => {
+    setCustomerId(getCookie("customerId"));
+
     const fetchPrices = async () => {
       const { prices } = await fetch("/config").then((r) => r.json());
       setPrices(prices);
@@ -19,36 +32,8 @@ const Price = () => {
     fetchPrices();
   }, []);
 
-  const createSubscription = async (priceId) => {
-    try {
-      const response = await fetch("/create-subscription", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          priceId,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok.");
-      }
-
-      const { subscriptionId, clientSecret } = await response.json();
-      setCookie("cliSecret", clientSecret, { path: "/" });
-      setCookie("subId", subscriptionId, { path: "/" });
-      console.log(subscriptionId, "000000");
-      console.log(clientSecret, "000000");
-      navigate("/subscribe"); // Redirect after receiving the response
-    } catch (error) {
-      console.error("Error creating subscription:", error);
-      // Handle the error appropriately, e.g., show an error message to the user.
-    }
-  };
-
   return (
-    <div className="main-price-container">
+    <div id="main-price-container">
       <div className="price-title-container">
         <div className="price-title">Our Price Guarantee</div>
         <p>Choose a plan tailored to your needs</p>
@@ -71,12 +56,25 @@ const Price = () => {
                   {price.product.metadata.ip}
                 </p>
               </div>
-              <button
-                className="plan-btn"
-                onClick={() => createSubscription(price.id)}
-              >
-                Choose Plan
-              </button>
+              <form action="/create-checkout-session" method="POST">
+                <input
+                  type="hidden"
+                  name="lookup_key"
+                  value={price.lookup_key}
+                />
+                <input
+                  type="hidden"
+                  name="requests"
+                  value={price.product.metadata.request}
+                />
+                <input
+                  type="hidden"
+                  name="ips"
+                  value={price.product.metadata.ip}
+                />
+                <input type="hidden" name="customerId" value={customerId} />
+                <button type="submit">Choose Plan</button>
+              </form>
               {/* NEEDS AN ONCLICK TO CALL CREATE SUBSCRIPTION */}
             </div>
           );

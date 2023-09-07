@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { ReactComponent as Logo } from "../assets/arrow-right.svg";
 import { ReactComponent as Search } from "../assets/search.svg";
@@ -12,21 +12,18 @@ const navbar = () => {
 
   const loggedInUser = getCookie("logged_in") || false;
 
-  let navigate = useNavigate();
-  const toLogin = () => {
-    navigate("/login");
-  };
-  const toRegister = () => {
-    navigate("/register");
-  };
-
   return (
     <div className="nav-container">
       <div className="nav-links">
         <div className="nav-logo">scoreit</div>
         <ul className="nav-list">
           <li className="hoverable">Tables</li>
-          <li className="hoverable">Scores</li>
+          {loggedInUser && (
+            <Link to={"/dashboard"}>
+              <li className="hoverable">Dashboard</li>
+            </Link>
+          )}
+
           <li className="hoverable">
             <a href="#main-price-container">Pricing</a>
           </li>
