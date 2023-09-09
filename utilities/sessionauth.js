@@ -1,7 +1,9 @@
 const connect = require("../db/connect");
 const users = connect.db.collection("users");
 const crypto = require("crypto");
+
 // Creates user API keys
+
 module.exports.createAPIKey = createAPIKey = () => {
   let id = crypto.randomBytes(20).toString("hex");
   return id;
@@ -12,7 +14,7 @@ module.exports.authKey = authKey = async (req, res, next) => {
   let findKey = await users
     .find({ key: req.headers["authorization"] })
     .toArray();
-  console.log(req.headers);
+  console.log(findKey);
   if (findKey.length == 1) {
     next();
   } else {

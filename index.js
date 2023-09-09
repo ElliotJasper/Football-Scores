@@ -1,3 +1,4 @@
+// Require all packages
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const express = require("express");
@@ -8,13 +9,17 @@ const sessionauth = require("./utilities/sessionauth");
 const footballRoute = require("./routes/football");
 const body_parser = require("body-parser");
 
+// Set up stripe and server
+
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 const endpointSecret =
   "whsec_1861d4669ed88cba5cceca606d411c2d775cce65c3875c101f3aa32487be42c7";
+const YOUR_DOMAIN = "http://localhost:3000";
 
+// Webhook that listens for when a user successfuly pays
 app.post(
   "/webhook",
   express.raw({ type: "application/json" }),
@@ -44,7 +49,6 @@ app.post(
         console.log(
           `PaymentIntent for ${paymentIntent.amount} was successful!`
         );
-        // Then define and call a method to handle the successful payment intent.
         const APIKey = sessionauth.createAPIKey();
         const filter = { custID: paymentIntent.customer };
         const updateDoc = {
@@ -74,6 +78,8 @@ app.post(
     res.send();
   }
 );
+
+// Parsers
 app.use(body_parser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
@@ -87,8 +93,7 @@ app.use(
   })
 );
 
-const YOUR_DOMAIN = "http://localhost:3000";
-
+// Sends all prices and product info to front end for display
 app.get("/config", async (req, res) => {
   const prices = await stripe.prices.list({
     lookup_keys: ["freelance", "professional", "plus"],
@@ -101,18 +106,21 @@ app.get("/config", async (req, res) => {
   });
 });
 
+// Uses stripes premade checkout session
 app.post("/create-checkout-session", async (req, res) => {
   //console.log(req.body.customerId);
   const prices = await stripe.prices.list({
     lookup_keys: [req.body.lookup_key],
     expand: ["data.product"],
   });
+
   const requests = req.body.requests.split(" ")[0];
   const ips = req.body.ips.split(" ")[0];
-  console.log(requests, ips);
+
   res.cookie("price", prices.data[0].unit_amount / 100);
   res.cookie("requests", requests);
   res.cookie("ips", ips);
+
   const session = await stripe.checkout.sessions.create({
     billing_address_collection: "auto",
     line_items: [
@@ -131,8 +139,10 @@ app.post("/create-checkout-session", async (req, res) => {
   res.redirect(303, session.url);
 });
 
+// Route to football file if appropriate
 app.use("/api/v1/football", footballRoute);
 
+// Allows users to register if email not already exist
 app.post("/api/v1/register", async (req, res, next) => {
   try {
     const password = await bcrypt.hash(req.body.password, 10);
@@ -160,14 +170,7 @@ app.post("/api/v1/register", async (req, res, next) => {
   }
 });
 
-app.get("/api/v1/checkauth", async (req, res, next) => {
-  if (req.session.email) {
-    res.status(200).send();
-  } else {
-    res.status(401).send();
-  }
-});
-
+// Check user credentials when logging in
 app.post("/api/v1/login", async (req, res, next) => {
   try {
     const result = await connect.db
@@ -194,6 +197,8 @@ app.post("/api/v1/login", async (req, res, next) => {
   }
 });
 
+// Send the API key to the frontend to give to user
+// Other things sent in the future
 app.post("/sub-info", async (req, res) => {
   let val = decodeURIComponent(req.body.email);
   const result = await connect.db.collection("users").findOne({ email: val });
@@ -202,6 +207,7 @@ app.post("/sub-info", async (req, res) => {
   res.send(JSON.stringify(result.key));
 });
 
+// Middleware check for server errors
 app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).send("Internal server error");

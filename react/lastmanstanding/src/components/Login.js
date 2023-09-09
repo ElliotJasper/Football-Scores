@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { sanitize } from "../utils/sanitize";
-import { useCookies } from "react-cookie";
+import { Link } from "react-router-dom";
+import { ReactComponent as User } from "../assets/user-circle.svg";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -35,22 +36,36 @@ function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Login</button>
-      {error && <p>{error}</p>}
-    </form>
+    <div className="login-page">
+      <div className="login-form-container">
+        <form onSubmit={handleLogin}>
+          <User />
+          <div className="already-a-user">Already a member?</div>
+          <div className="sign-in-text">Sign into your account</div>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <div className="register-container"></div>
+          <button type="submit" id="sign-in-btn">
+            Sign In
+          </button>
+          <Link to={"/register"}>
+            <div className="register-link">Register an account</div>
+          </Link>
+          <button className="google-connect">Connect With Google</button>
+          {error && <p>{error}</p>}
+        </form>
+      </div>
+    </div>
   );
 }
 
