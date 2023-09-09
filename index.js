@@ -15,8 +15,7 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-const endpointSecret =
-  "whsec_1861d4669ed88cba5cceca606d411c2d775cce65c3875c101f3aa32487be42c7";
+const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
 const YOUR_DOMAIN = "http://localhost:3000";
 
 // Webhook that listens for when a user successfuly pays

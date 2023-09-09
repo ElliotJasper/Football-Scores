@@ -31,7 +31,7 @@ router.get("/", sessionauth.authKey, async (req, res) => {
   }
 });
 
-// Test route
+// Test route used on frontend
 router.get("/test", async (req, res) => {
   getData = await leaguesCollection
     .find({ leagueName: "Premier League Table" })
