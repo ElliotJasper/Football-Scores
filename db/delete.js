@@ -9,11 +9,7 @@ const games = require("../request");
 const date = require("../getdate");
 const { useSyncExternalStore } = require("react");
 
-const URI =
-  "mongodb+srv://elliotadmin:" +
-  process.env.PASSWORD +
-  "@lastmanstanding.oqj3y.mongodb.net/?retryWrites=true&w=majority";
-
+const URI = process.env.PASSWORD;
 // Connect to MonogDB
 const client = new MongoClient(URI, {
   useNewUrlParser: true,

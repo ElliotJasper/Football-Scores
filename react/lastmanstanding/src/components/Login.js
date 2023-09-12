@@ -40,17 +40,17 @@ function Login() {
       <div className="login-form-container">
         <form onSubmit={handleLogin}>
           <User />
-          <div className="already-a-user">Already a member?</div>
+          <div className="login-main-text">Already a member?</div>
           <div className="sign-in-text">Sign into your account</div>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />

@@ -7,10 +7,7 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 const games = require("../request");
 const date = require("../getdate");
 
-const URI =
-  "mongodb+srv://elliotadmin:" +
-  process.env.PASSWORD +
-  "@lastmanstanding.oqj3y.mongodb.net/?retryWrites=true&w=majority";
+const URI = process.env.PASSWORD;
 
 const client = new MongoClient(URI, {
   useNewUrlParser: true,

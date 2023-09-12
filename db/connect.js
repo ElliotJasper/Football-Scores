@@ -3,10 +3,7 @@ require("dotenv").config({
   path: __dirname + "/../.env",
 });
 const { MongoClient, ServerApiVersion, Db } = require("mongodb");
-const URI =
-  "mongodb+srv://elliotadmin:" +
-  process.env.PASSWORD +
-  "@lastmanstanding.oqj3y.mongodb.net/lastmanstanding-scores?retryWrites=true&w=majority";
+const URI = process.env.PASSWORD;
 const client = new MongoClient(URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,

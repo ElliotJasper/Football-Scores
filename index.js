@@ -3,12 +3,12 @@ require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const express = require("express");
 const session = require("express-session");
+const MongoStore = require("connect-mongo");
 const bcrypt = require("bcrypt");
 const connect = require("./db/connect");
 const sessionauth = require("./utilities/sessionauth");
 const footballRoute = require("./routes/football");
 const body_parser = require("body-parser");
-
 // Set up stripe and server
 
 const stripe = require("stripe")(process.env.STRIPE_KEY);
@@ -86,9 +86,13 @@ app.use(cookieParser());
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     name: "session_id",
+    store: MongoStore.create({
+      mongoUrl: process.env.PASSWORD,
+      collectionName: "sessions",
+    }),
   })
 );
 
@@ -107,7 +111,8 @@ app.get("/config", async (req, res) => {
 
 // Uses stripes premade checkout session
 app.post("/create-checkout-session", async (req, res) => {
-  //console.log(req.body.customerId);
+  console.log(req.body.customerId);
+  console.log(req.session.email);
   const prices = await stripe.prices.list({
     lookup_keys: [req.body.lookup_key],
     expand: ["data.product"],
@@ -145,6 +150,7 @@ app.use("/api/v1/football", footballRoute);
 app.post("/api/v1/register", async (req, res, next) => {
   try {
     const password = await bcrypt.hash(req.body.password, 10);
+    console.log(password);
     const result = await connect.db
       .collection("users")
       .findOne({ email: req.body.email });
@@ -187,6 +193,7 @@ app.post("/api/v1/login", async (req, res, next) => {
       return res.status(401).send("Incorrect username or password");
     }
     req.session.email = req.body.email;
+    req.session.user = "elliot";
     res.cookie("logged_in", true);
     res.cookie("email", req.body.email);
     res.cookie("customerId", result.custID);
@@ -204,6 +211,15 @@ app.post("/sub-info", async (req, res) => {
 
   console.log(result.key);
   res.send(JSON.stringify(result.key));
+});
+
+app.get("/set-session", (req, res) => {
+  res.sendStatus(200);
+});
+
+app.get("/show-session", (req, res) => {
+  console.log(req.session.user);
+  res.sendStatus(200);
 });
 
 // Middleware check for server errors

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { sanitize } from "../utils/sanitize";
+import { ReactComponent as User } from "../assets/user-circle.svg";
 
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -12,6 +14,17 @@ const Register = () => {
     e.preventDefault();
     const sanitizedEmail = sanitize(email);
     const sanitizedPassword = sanitize(password);
+    const sanitizedPasswordConfirm = sanitize(passwordConfirm);
+
+    console.log(sanitizedPassword);
+    console.log(sanitizedPasswordConfirm);
+
+    if (
+      sanitizedPassword != sanitizedPasswordConfirm ||
+      sanitizedEmail.length == 0
+    ) {
+      return;
+    }
 
     fetch("/api/v1/register", {
       method: "POST",
@@ -19,6 +32,7 @@ const Register = () => {
       body: JSON.stringify({
         email: sanitizedEmail,
         password: sanitizedPassword,
+        passwordConfirm: sanitizedPasswordConfirm,
       }),
     })
       .then((res) => {
@@ -34,22 +48,37 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={handleRegister}>
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit">Register</button>
-      {error && <p>{error}</p>}
-    </form>
+    <div className="login-page">
+      <div className="login-form-container">
+        <form onSubmit={handleRegister}>
+          <User />
+          <div className="login-main-text">Register your account</div>
+          <div className="sign-in-text">Enter your details</div>
+          <input
+            type="email"
+            placeholder="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="re-enter password"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+          />
+          <button type="submit" id="register-btn">
+            Register
+          </button>
+          {error && <p>{error}</p>}
+        </form>
+      </div>
+    </div>
   );
 };
 

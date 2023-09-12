@@ -9,10 +9,7 @@ console.log(process.env.PASSWORD);
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
-const URI =
-  "mongodb+srv://elliotadmin:" +
-  process.env.PASSWORD +
-  "@lastmanstanding.oqj3y.mongodb.net/?retryWrites=true&w=majority";
+const URI = process.env.PASSWORD;
 
 // Connect to MonogDB
 const client = new MongoClient(URI, {
