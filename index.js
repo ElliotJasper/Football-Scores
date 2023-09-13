@@ -1,3 +1,5 @@
+// If a user is already a paying subscriber, then if they try to subscribe again alert them to the fact theyre already paying and what theyre paying for.
+
 // Require all packages
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
@@ -16,7 +18,7 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 const app = express();
 const PORT = process.env.PORT || 8000;
 const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
-const YOUR_DOMAIN = "http://localhost:3000";
+const DOMAIN = "http://localhost:3000";
 
 // Webhook that listens for when a user successfuly pays
 app.post(
@@ -49,7 +51,7 @@ app.post(
           `PaymentIntent for ${paymentIntent.amount} was successful!`
         );
         const APIKey = sessionauth.createAPIKey();
-        const filter = { custID: paymentIntent.customer };
+        let filter = { custID: paymentIntent.customer };
         const updateDoc = {
           $set: {
             activeSubscription: true,
@@ -61,13 +63,25 @@ app.post(
           .collection("users")
           .updateOne(filter, updateDoc);
         console.log(result);
-        // handlePaymentIntentSucceeded(paymentIntent);
         break;
-      case "payment_method.attached":
-        const paymentMethod = event.data.object;
-        // Then define and call a method to handle the successful attachment of a PaymentMethod.
-        // handlePaymentMethodAttached(paymentMethod);
-        break;
+
+      case "customer.subscription.deleted":
+        // Revoke subscription
+        const subscription = event.data.object;
+        filter = { custID: subscription.customer };
+        updateDoc = {
+          $set: {
+            activeSubscription: false,
+            subscriptionLevel: 0,
+            key: APIKey,
+          },
+        };
+        result = await connect.db
+          .collection("users")
+          .updateOne(filter, updateDoc);
+        console.log(result);
+        console.log("Subscription was deleted");
+
       default:
         // Unexpected event type
         console.log(`Unhandled event type ${event.type}.`);
@@ -112,7 +126,7 @@ app.get("/config", async (req, res) => {
 // Uses stripes premade checkout session
 app.post("/create-checkout-session", async (req, res) => {
   console.log(req.body.customerId);
-  console.log(req.session.email);
+  console.log(req.session.email, " session");
   const prices = await stripe.prices.list({
     lookup_keys: [req.body.lookup_key],
     expand: ["data.product"],
@@ -120,7 +134,6 @@ app.post("/create-checkout-session", async (req, res) => {
 
   const requests = req.body.requests.split(" ")[0];
   const ips = req.body.ips.split(" ")[0];
-
   res.cookie("price", prices.data[0].unit_amount / 100);
   res.cookie("requests", requests);
   res.cookie("ips", ips);
@@ -135,12 +148,23 @@ app.post("/create-checkout-session", async (req, res) => {
       },
     ],
     mode: "subscription",
-    success_url: `${YOUR_DOMAIN}/confirm`,
-    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
+    success_url: `${DOMAIN}/confirm`,
+    cancel_url: `${DOMAIN}?canceled=true`,
     customer: req.body.customerId,
   });
 
   res.redirect(303, session.url);
+});
+
+app.post("/create-portal-session", async (req, res) => {
+  const returnURL = DOMAIN;
+
+  const portalSession = await stripe.billingPortal.sessions.create({
+    customer: req.cookies.customerId,
+    return_url: returnURL,
+  });
+
+  res.redirect(303, portalSession.url);
 });
 
 // Route to football file if appropriate
@@ -165,6 +189,7 @@ app.post("/api/v1/register", async (req, res, next) => {
         password: password,
         //key: sessionauth.createAPIKey(),
         custID: customer.id,
+        activeSubscription: false,
       };
       await connect.db.collection("users").insertOne(info);
       console.log("user created");
@@ -193,10 +218,10 @@ app.post("/api/v1/login", async (req, res, next) => {
       return res.status(401).send("Incorrect username or password");
     }
     req.session.email = req.body.email;
-    req.session.user = "elliot";
     res.cookie("logged_in", true);
     res.cookie("email", req.body.email);
     res.cookie("customerId", result.custID);
+    res.cookie("is_subscribed", result.activeSubscription);
     res.status(200).send({ customerId: result.custID });
   } catch (err) {
     next(err);

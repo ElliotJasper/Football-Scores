@@ -13,12 +13,18 @@ const Price = () => {
   const [prices, setPrices] = useState([]);
   const [subscriptionData, setSubscriptionData] = useState(null);
 
-  const navigate = useNavigate();
-
   const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(";").shift();
+  };
+
+  const checkSubscribed = (e) => {
+    const isSubscribed = getCookie("is_subscribed");
+    if (isSubscribed) {
+      alert("You are already subscribed");
+      e.preventDefault();
+    }
   };
 
   useEffect(() => {
@@ -73,12 +79,16 @@ const Price = () => {
                   value={price.product.metadata.ip}
                 />
                 <input type="hidden" name="customerId" value={customerId} />
-                <button type="submit">Choose Plan</button>
+                <button type="submit" class="pay-btn" onClick={checkSubscribed}>
+                  Choose Plan
+                </button>
               </form>
-              {/* NEEDS AN ONCLICK TO CALL CREATE SUBSCRIPTION */}
             </div>
           );
         })}
+        <form action="/create-portal-session" method="POST">
+          <button type="submit">Manage Billing Info</button>
+        </form>
       </div>
     </div>
   );
