@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
 import { ReactComponent as Logo } from "../assets/arrow-right.svg";
 import { ReactComponent as Search } from "../assets/search.svg";
-
+import AccountPopout from "./AccountPopout";
 const navbar = () => {
+  const [isPopout, setIsPopout] = useState(false);
+
+  const togglePopout = () => {
+    setIsPopout(!isPopout);
+  };
+
   const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -43,13 +49,17 @@ const navbar = () => {
             <Link to={"/login"}>Sign In</Link>
           </div>
         ) : (
-          <div className="sign-in-text hoverable">Sign Out</div>
+          <div className="sign-in-text hoverable" onClick={togglePopout}>
+            Account
+          </div>
         )}
 
         <div className="svg-container">
           <Logo />
         </div>
       </div>
+
+      {isPopout && <AccountPopout />}
     </div>
   );
 };

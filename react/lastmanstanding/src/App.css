@@ -857,3 +857,39 @@ li {
   cursor: pointer;
   opacity: 0.9;
 }
+
+.popout-container {
+  width: 200px;
+  line-height: 60px;
+  position: absolute;
+  top: 80px;
+  right: 0;
+  color: #80889e;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.popout {
+  display: flex;
+  flex-direction: column;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  padding-left: 15px;
+  border-radius: 20px 0 0 20px;
+}
+
+.account-list > li {
+  border-bottom: 1px solid #efefef;
+}
+.account-list > form {
+  border-bottom: 1px solid #efefef;
+}
+#account-button {
+  background: none;
+  border: none;
+  color: #80889e;
+  font-size: 18px;
+  font-weight: 700;
+}
+#account-button:hover {
+  cursor: pointer;
+}

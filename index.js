@@ -89,11 +89,13 @@ app.post("/create-checkout-session", async (req, res) => {
 
 app.post("/create-portal-session", async (req, res) => {
   const returnURL = DOMAIN;
+  console.log("create-portal-session");
 
   const portalSession = await stripe.billingPortal.sessions.create({
     customer: req.cookies.customerId,
     return_url: returnURL,
   });
+  console.log(portalSession);
 
   res.redirect(303, portalSession.url);
 });

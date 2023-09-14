@@ -86,9 +86,9 @@ const Price = () => {
             </div>
           );
         })}
-        <form action="/create-portal-session" method="POST">
+        {/* <form action="/create-portal-session" method="POST"> 
           <button type="submit">Manage Billing Info</button>
-        </form>
+      </form>*/}
       </div>
     </div>
   );
