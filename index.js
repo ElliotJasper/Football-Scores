@@ -1,5 +1,3 @@
-// If a user is already a paying subscriber, then if they try to subscribe again alert them to the fact theyre already paying and what theyre paying for.
-
 // Require all packages
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
@@ -10,6 +8,7 @@ const bcrypt = require("bcrypt");
 const connect = require("./db/connect");
 const sessionauth = require("./utilities/sessionauth");
 const footballRoute = require("./routes/football");
+const stripeRoute = require("./routes/stripe");
 const body_parser = require("body-parser");
 // Set up stripe and server
 
@@ -17,80 +16,9 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const app = express();
 const PORT = process.env.PORT || 8000;
-const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
 const DOMAIN = "http://localhost:3000";
 
-// Webhook that listens for when a user successfuly pays
-app.post(
-  "/webhook",
-  express.raw({ type: "application/json" }),
-  async (req, res) => {
-    let event = req.body;
-    // Only verify the event if you have an endpoint secret defined.
-    // Otherwise use the basic event deserialized with JSON.parse
-    if (endpointSecret) {
-      // Get the signature sent by Stripe
-      const signature = req.headers["stripe-signature"];
-      try {
-        event = stripe.webhooks.constructEvent(
-          req.body,
-          signature,
-          endpointSecret
-        );
-      } catch (err) {
-        console.log(`⚠️  Webhook signature verification failed.`, err.message);
-        return res.sendStatus(400);
-      }
-    }
-
-    // If payment intent succeeded, create API key for user
-    switch (event.type) {
-      case "payment_intent.succeeded":
-        const paymentIntent = event.data.object;
-        console.log(
-          `PaymentIntent for ${paymentIntent.amount} was successful!`
-        );
-        const APIKey = sessionauth.createAPIKey();
-        let filter = { custID: paymentIntent.customer };
-        const updateDoc = {
-          $set: {
-            activeSubscription: true,
-            subscriptionLevel: paymentIntent.amount,
-            key: APIKey,
-          },
-        };
-        const result = await connect.db
-          .collection("users")
-          .updateOne(filter, updateDoc);
-        console.log(result);
-        break;
-
-      case "customer.subscription.deleted":
-        // Revoke subscription
-        const subscription = event.data.object;
-        filter = { custID: subscription.customer };
-        updateDoc = {
-          $set: {
-            activeSubscription: false,
-            subscriptionLevel: 0,
-            key: APIKey,
-          },
-        };
-        result = await connect.db
-          .collection("users")
-          .updateOne(filter, updateDoc);
-        console.log(result);
-        console.log("Subscription was deleted");
-
-      default:
-        // Unexpected event type
-        console.log(`Unhandled event type ${event.type}.`);
-    }
-
-    // Return a 200 response to acknowledge receipt of the event
-    res.send();
-  }
-);
+app.use("/api/v1/stripe", stripeRoute);
 
 // Parsers
 app.use(body_parser.urlencoded({ extended: true }));
@@ -107,6 +35,9 @@ app.use(
       mongoUrl: process.env.PASSWORD,
       collectionName: "sessions",
     }),
+    cookie: {
+      maxAge: 1 * 24 * 60 * 60 * 1000,
+    },
   })
 );
 

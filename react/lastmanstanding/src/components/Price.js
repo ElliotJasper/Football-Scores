@@ -19,13 +19,13 @@ const Price = () => {
     if (parts.length === 2) return parts.pop().split(";").shift();
   };
 
-  const checkSubscribed = (e) => {
+  /*const checkSubscribed = (e) => {
     const isSubscribed = getCookie("is_subscribed");
-    if (isSubscribed) {
+    if (isSubscribed == "true") {
       alert("You are already subscribed");
       e.preventDefault();
     }
-  };
+  };*/
 
   useEffect(() => {
     setCustomerId(getCookie("customerId"));
@@ -79,7 +79,7 @@ const Price = () => {
                   value={price.product.metadata.ip}
                 />
                 <input type="hidden" name="customerId" value={customerId} />
-                <button type="submit" class="pay-btn" onClick={checkSubscribed}>
+                <button type="submit" class="pay-btn">
                   Choose Plan
                 </button>
               </form>

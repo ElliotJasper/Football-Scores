@@ -11,11 +11,8 @@ module.exports.createAPIKey = createAPIKey = () => {
 
 // Check API Key on subsequen requests.
 module.exports.authKey = authKey = async (req, res, next) => {
-  let findKey = await users
-    .find({ key: req.headers["authorization"] })
-    .toArray();
-  console.log(findKey);
-  if (findKey.length == 1) {
+  let findKey = await users.findOne({ key: req.headers["authorization"] });
+  if (findKey && findKey.activeSubscription) {
     next();
   } else {
     return res.status(401).send("error");
