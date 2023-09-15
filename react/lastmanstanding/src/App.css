@@ -883,13 +883,13 @@ li {
 .account-list > form {
   border-bottom: 1px solid #efefef;
 }
-#account-button {
+.account-button {
   background: none;
   border: none;
   color: #80889e;
   font-size: 18px;
   font-weight: 700;
 }
-#account-button:hover {
+.account-button:hover {
   cursor: pointer;
 }

@@ -10,29 +10,28 @@ function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const sanitizedEmail = sanitize(email);
     const sanitizedPassword = sanitize(password);
 
-    fetch("/api/v1/login", {
+    const result = await fetch("/api/v1/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         email: sanitizedEmail,
         password: sanitizedPassword,
       }),
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          navigate("/"); // Redirect to home page
-        } else {
-          throw new Error("Invalid email or password");
-        }
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+    });
+    const json = await result.json();
+    console.log(result.status);
+    if (result.status == 200) {
+      console.log(json);
+      for (let item in json) {
+        localStorage.setItem(item, json[item]);
+      }
+      navigate("/");
+    }
   };
 
   return (

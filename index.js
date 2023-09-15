@@ -56,7 +56,7 @@ app.get("/config", async (req, res) => {
 
 // Uses stripes premade checkout session
 app.post("/create-checkout-session", async (req, res) => {
-  console.log(req.body.customerId);
+  console.log(req.session.customerId);
   console.log(req.session.email, " session");
   const prices = await stripe.prices.list({
     lookup_keys: [req.body.lookup_key],
@@ -81,7 +81,7 @@ app.post("/create-checkout-session", async (req, res) => {
     mode: "subscription",
     success_url: `${DOMAIN}/confirm`,
     cancel_url: `${DOMAIN}?canceled=true`,
-    customer: req.body.customerId,
+    customer: req.session.customerId,
   });
 
   res.redirect(303, session.url);
@@ -92,7 +92,7 @@ app.post("/create-portal-session", async (req, res) => {
   console.log("create-portal-session");
 
   const portalSession = await stripe.billingPortal.sessions.create({
-    customer: req.cookies.customerId,
+    customer: req.session.customerId,
     return_url: returnURL,
   });
   console.log(portalSession);
@@ -151,14 +151,23 @@ app.post("/api/v1/login", async (req, res, next) => {
       return res.status(401).send("Incorrect username or password");
     }
     req.session.email = req.body.email;
-    res.cookie("logged_in", true);
-    res.cookie("email", req.body.email);
-    res.cookie("customerId", result.custID);
-    res.cookie("is_subscribed", result.activeSubscription);
-    res.status(200).send({ customerId: result.custID });
+    req.session.customerId = result.custID;
+    res.status(200).send({
+      email: req.body.email,
+      isSubscribed: result.activeSubscription,
+      loggedIn: true,
+    });
   } catch (err) {
     next(err);
   }
+});
+
+app.post("/sign-out", (req, res) => {
+  console.log("doing something");
+  req.session.destroy();
+  res.clearCookie("session_id");
+  res.redirect(303, req.headers["referer"]);
+  res.end();
 });
 
 // Send the API key to the frontend to give to user

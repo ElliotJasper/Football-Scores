@@ -16,7 +16,7 @@ const navbar = () => {
     if (parts.length === 2) return parts.pop().split(";").shift();
   };
 
-  const loggedInUser = getCookie("logged_in") || false;
+  const loggedInUser = localStorage.getItem("loggedIn") || false;
 
   return (
     <div className="nav-container">

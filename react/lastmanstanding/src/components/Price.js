@@ -34,7 +34,6 @@ const Price = () => {
       const { prices } = await fetch("/config").then((r) => r.json());
       setPrices(prices);
     };
-
     fetchPrices();
   }, []);
 
