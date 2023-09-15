@@ -156,6 +156,7 @@ app.post("/api/v1/login", async (req, res, next) => {
       email: req.body.email,
       isSubscribed: result.activeSubscription,
       loggedIn: true,
+      apiKey: result.key,
     });
   } catch (err) {
     next(err);

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { ReactComponent as Github } from "../assets/github.svg";
 
 const Tables = () => {
   const [engTeam, setEngTeam] = useState([]);
@@ -28,7 +29,7 @@ const Tables = () => {
   }, []);
 
   return (
-    <div className="tables-container">
+    <div id="tables-container">
       <div className="tables-header">Current League Tables Sample</div>
       <div className="all-tables-container">
         <div className="single-table">
@@ -137,6 +138,7 @@ const Tables = () => {
           </div>
         </div>
       </div>
+      <Github />
     </div>
   );
 };

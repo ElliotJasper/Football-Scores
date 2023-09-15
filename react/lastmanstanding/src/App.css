@@ -720,17 +720,19 @@ li {
   font-size: 1.6rem;
 }
 
-.tables-container {
+#tables-container {
   background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #000000;
-  height: 1000px;
+  gap: 100px;
+  padding-bottom: 50px;
 }
 
 .tables-header {
+  margin-top: 50px;
   font-size: 2.5rem;
   font-weight: 700;
 }
@@ -749,7 +751,6 @@ li {
 }
 
 .all-tables-container {
-  margin-top: 100px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -818,6 +819,8 @@ li {
   color: #919dab;
   font-size: 1.25rem;
   margin-top: 10px;
+  color: #5674d5;
+  font-weight: 700;
 }
 
 #sign-in-btn,
@@ -840,6 +843,11 @@ li {
 .register-link {
   color: #919dab;
   margin-top: 10px;
+}
+
+.start,
+.try:hover {
+  cursor: pointer;
 }
 
 .google-connect {

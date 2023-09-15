@@ -19,13 +19,13 @@ const Price = () => {
     if (parts.length === 2) return parts.pop().split(";").shift();
   };
 
-  /*const checkSubscribed = (e) => {
-    const isSubscribed = getCookie("is_subscribed");
+  const checkSubscribed = (e) => {
+    const isSubscribed = localStorage.getItem("isSubscribed");
     if (isSubscribed == "true") {
       alert("You are already subscribed");
       e.preventDefault();
     }
-  };*/
+  };
 
   useEffect(() => {
     setCustomerId(getCookie("customerId"));
@@ -78,16 +78,13 @@ const Price = () => {
                   value={price.product.metadata.ip}
                 />
                 <input type="hidden" name="customerId" value={customerId} />
-                <button type="submit" class="pay-btn">
+                <button type="submit" onClick={checkSubscribed} class="pay-btn">
                   Choose Plan
                 </button>
               </form>
             </div>
           );
         })}
-        {/* <form action="/create-portal-session" method="POST"> 
-          <button type="submit">Manage Billing Info</button>
-      </form>*/}
       </div>
     </div>
   );

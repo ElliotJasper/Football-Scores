@@ -10,27 +10,13 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const email = getCookie("email");
-    const loggedIn = getCookie("logged_in") || false;
-
-    const getSubscriptionInfo = async () => {
-      fetch("/sub-info", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => setKey(data));
-    };
+    const email = localStorage.getItem("email");
+    const loggedIn = localStorage.getItem("isSubscribed") || false;
+    const apiKey = localStorage.getItem("apiKey");
+    setKey(apiKey);
 
     if (!loggedIn) {
       window.location.href = "/";
-    } else {
-      getSubscriptionInfo();
     }
   }, []);
 

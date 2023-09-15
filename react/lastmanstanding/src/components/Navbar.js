@@ -23,7 +23,9 @@ const navbar = () => {
       <div className="nav-links">
         <div className="nav-logo">scoreit</div>
         <ul className="nav-list">
-          <li className="hoverable">Tables</li>
+          <li className="hoverable">
+            <a href="#tables-container">Tables</a>
+          </li>
           {loggedInUser && (
             <Link to={"/dashboard"}>
               <li className="hoverable">Dashboard</li>
@@ -53,10 +55,6 @@ const navbar = () => {
             Account
           </div>
         )}
-
-        <div className="svg-container">
-          <Logo />
-        </div>
       </div>
 
       {isPopout && <AccountPopout />}
