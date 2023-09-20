@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ReactComponent as Github } from "../assets/github.svg";
+import mongo from "../assets/mongodb.png";
 
 const Tables = () => {
   const [engTeam, setEngTeam] = useState([]);
@@ -138,7 +139,10 @@ const Tables = () => {
           </div>
         </div>
       </div>
-      <Github />
+      <div className="footer-container">
+        <Github />
+        <img id="mongo-img" src={mongo} alt="" />
+      </div>
     </div>
   );
 };

@@ -901,3 +901,15 @@ li {
 .account-button:hover {
   cursor: pointer;
 }
+
+#mongo-img {
+  width: 128px;
+  height: 128px;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 70px;
+}
