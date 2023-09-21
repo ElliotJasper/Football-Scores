@@ -1,5 +1,8 @@
 const date = require("./getdate");
 
+const formatDateAPITest = '2023-09-20';
+const formatDatePathTest = 'Wednesday-20th-September'; 
+
 // Leagues to get data from
 const leaguesToUse = [
   "premier-league",
