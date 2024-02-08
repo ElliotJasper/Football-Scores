@@ -54,35 +54,38 @@ const getGames = async (name) => {
     let data = await getGames(competition);
 
     // If it's a group competition, there will be multiple objects to loop, if not just [0]
-    for (let league of data) {
-      if (league == 0) continue;
-      // Now loop through each group (or league) to get individual games
-      for (singleGame of league.events) {
-        let round;
-        if (league.round.name != null) {
-          round = league.round.name.first;
-        } else {
-          round = null;
+    console.log(data);
+    if (data !== undefined) {
+      for (let league of data) {
+        if (league == 0) continue;
+        // Now loop through each group (or league) to get individual games
+        for (singleGame of league.events) {
+          let round;
+          if (league.round.name != null) {
+            round = league.round.name.first;
+          } else {
+            round = null;
+          }
+          let game = {
+            date: formatDateAPI,
+            league: singleGame.tournamentName.full,
+            round: round,
+            startTime: singleGame.startTimeInUKHHMM,
+            homeNameAbbrv: singleGame.homeTeam.name.abbreviation,
+            homeNameFull: singleGame.homeTeam.name.full,
+            homeScore: singleGame.homeTeam.scores.score,
+            homeResult: singleGame.homeTeam.eventOutcome,
+            awayNameAbbrv: singleGame.awayTeam.name.abbreviation,
+            awayNameFull: singleGame.awayTeam.name.full,
+            awayScore: singleGame.awayTeam.scores.score,
+            awayResult: singleGame.awayTeam.eventOutcome,
+          };
+          allGames.push(game);
         }
-        let game = {
-          date: formatDateAPI,
-          league: singleGame.tournamentName.full,
-          round: round,
-          startTime: singleGame.startTimeInUKHHMM,
-          homeNameAbbrv: singleGame.homeTeam.name.abbreviation,
-          homeNameFull: singleGame.homeTeam.name.full,
-          homeScore: singleGame.homeTeam.scores.score,
-          homeResult: singleGame.homeTeam.eventOutcome,
-          awayNameAbbrv: singleGame.awayTeam.name.abbreviation,
-          awayNameFull: singleGame.awayTeam.name.full,
-          awayScore: singleGame.awayTeam.scores.score,
-          awayResult: singleGame.awayTeam.eventOutcome,
-        };
-        allGames.push(game);
       }
     }
   }
-  console.log(allGames);
+  //console.log(allGames);
 
   //console.log(allGames);
   module.exports.allGames = allGames;

@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { ReactComponent as Logo } from "../assets/arrow-right.svg";
+import { ReactComponent as Google } from "../assets/google.svg";
+import { ReactComponent as Apple } from "../assets/apple.svg";
 import { ReactComponent as Search } from "../assets/search.svg";
+
 import AccountPopout from "./AccountPopout";
 const navbar = () => {
   const [isPopout, setIsPopout] = useState(false);

@@ -1,7 +1,7 @@
 const date = require("./getdate");
 
-const formatDateAPITest = '2023-09-20';
-const formatDatePathTest = 'Wednesday-20th-September'; 
+const formatDateAPITest = "2023-09-20";
+const formatDatePathTest = "Wednesday-20th-September";
 
 // Leagues to get data from
 const leaguesToUse = [
@@ -53,7 +53,7 @@ const getGames = async (name) => {
 
     for (let league of data) {
       if (league == 0) continue;
-
+      // Store the game data in an object, much simpler than BBC.
       let game = {
         date: formatDateAPI,
         league: league.tournamentName.full,
@@ -67,9 +67,11 @@ const getGames = async (name) => {
         awayScore: league.awayTeam.scores.score,
         awayResult: league.awayTeam.eventOutcome,
       };
+      // Push the game to the array
       allGames.push(game);
     }
   }
   console.log(allGames);
+  // Export the array
   module.exports.allGames = allGames;
 })();
