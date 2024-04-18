@@ -5,6 +5,9 @@ const sessionauth = require("../utilities/sessionauth");
 require("dotenv").config({
   path: __dirname + "/../.env",
 });
+console.log("######################");
+console.log(process.env);
+console.log("######################");
 
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;

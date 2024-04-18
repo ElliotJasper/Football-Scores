@@ -60,6 +60,6 @@ let getLeague = async (id) => {
     // Push the league to an array containing all the leagues
     allLeagues.push(league);
   }
-  console.log(allLeagues);
+  //console.log(allLeagues);
   module.exports.allLeagues = allLeagues;
 })();

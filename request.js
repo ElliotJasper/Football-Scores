@@ -6,13 +6,13 @@ const formatDatePathTest = "Wednesday-20th-September";
 // Leagues to get data from
 const leaguesToUse = [
   "premier-league",
-  "championship",
-  "league-one",
-  "italian-serie-a",
-  "spanish-la-liga",
-  "german-bundesliga",
-  "french-ligue-one",
-  "europa-league",
+  //"championship",
+  //"league-one",
+  //"italian-serie-a",
+  //"spanish-la-liga",
+  //"german-bundesliga",
+  //"french-ligue-one",
+  //"europa-league",
 ];
 
 // Import date formats for API and pathing of API
@@ -66,6 +66,7 @@ const getGames = async (name) => {
         awayNameFull: league.awayTeam.name.full,
         awayScore: league.awayTeam.scores.score,
         awayResult: league.awayTeam.eventOutcome,
+        venue: league.venue.name.full,
       };
       // Push the game to the array
       allGames.push(game);
@@ -73,5 +74,5 @@ const getGames = async (name) => {
   }
   console.log(allGames);
   // Export the array
-  module.exports.allGames = allGames;
+  module.exports.allGames = "test";
 })();

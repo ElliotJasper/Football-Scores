@@ -23,6 +23,7 @@ async function updateLeagues() {
     await client.connect();
     const db = client.db("lastmanstanding-scores");
     await db.collection("leagues").deleteMany({});
+    console.log(league.allLeagues);
     const result = await db.collection("leagues").insertMany(league.allLeagues);
     console.log("Document Updated");
   } catch (err) {
